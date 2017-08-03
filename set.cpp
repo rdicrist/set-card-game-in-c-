@@ -145,6 +145,7 @@ void makeDeck(){
 }
 
 bool checkMatch(int a, int b, int c){
+    
     card aa = cardList[a];
     card bb = cardList[b];
     card cc = cardList[c];
@@ -224,12 +225,52 @@ int checkGrid(){
     return matches;
 }
 
+bool playerChoice(int &count){
+    std::cout << "Select 3 choices:\n" << std::endl;
+    int a;
+    std::cin >> a;
+    int b;
+    std::cin >> b;
+    int c;
+    std::cin >> c;
+    
+    //checks for repeats
+    if(a==b||b==c||a==c){
+        
+    }
+    
+    //sets limits on cards
+    if (isThree){
+        if (!(a<12+extra)||!(b<12+extra)||!(c<12+extra)){
+            std::cout << "Invalid selection!\n" << std::endl;
+            return false;
+        }
+    }
+    else{
+        if (!(a<12)||!(b<12)||!(c<12)){
+            std::cout << "Invalid selection!\n" << std::endl;
+            return false;
+        }
+    }
+    
+    
+    //if match, replace those cards, uses count variable to get through list
+    
+    if (checkMatch(a,b,c)){
+        updateDeck(a,b,c,count);
+        return true;
+    }
+    else {
+        std::cout << "That's not a match! Try again!\n" << std::endl;
+        return false;
+    }
+}
+
 void userPlay(){
     int count = 0;
     while (true) {
         printGrid();
         
-        //int cg = checkGrid();
         if(checkGrid() == 0){
             //if there are no cards left and no matches left, exit program
             if(count >=69){
@@ -240,51 +281,21 @@ void userPlay(){
             addThree();
         }
         
-        //keeps adding three if no mathes available
+       
+        //if there are extra cards in deck
         while(isThree){
-            if(checkGrid() == 0){
+            //if a choice is valid
+            if(playerChoice(count)){
                 //resets special values
                 isThree = false;
                 extra = 0;
             }
             else{
-                std::cout << "isThree was implemented but a match was not found again ahhhhh" << std::endl;
                 addThree();
             }
         }
         
-        std::cout << "Select 3 choices:\n" << std::endl;
-        int a;
-        std::cin >> a;
-        int b;
-        std::cin >> b;
-        int c;
-        std::cin >> c;
-        
-        //sets limits on cards
-        if (isThree){
-            if (!(a<12+extra)||!(b<12+extra)||!(c<12+extra)){
-                std::cout << "Invalid selection!" << std::endl;
-                continue;
-            }
-        }
-        else{
-            if (!(a<12)||!(b<12)||!(c<12)){
-                std::cout << "Invalid selection!" << std::endl;
-                continue;
-            }
-        }
-        
-        
-        //if match, replace those cards, uses count variable to get through list
-        
-        if (checkMatch(a,b,c)){
-            updateDeck(a,b,c,count);
-        }
-        else {
-            std::cout << "That's not a match! Try again!" << std::endl;
-        }
-        
+        playerChoice(count);
     }
 }
 
@@ -338,13 +349,13 @@ void solve(){
         
         //while loop for isThree
         while(isThree){
+            //if a match is found
             if(autoFindMatch(c)){
                 //resets special values
                 isThree = false;
                 extra = 0;
             }
             else{
-                std::cout << "isThree was implemented but a match was not found again ahhhhh" << std::endl;
                 addThree();
             }
         }
@@ -358,15 +369,8 @@ void solve(){
 int main() {
     makeDeck();
     //printGrid();
-    //userPlay();
-    solve();
-
-
-
-
-    
-    
-
+    userPlay();
+    //solve();
 }
 
 
