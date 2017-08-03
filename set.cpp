@@ -236,7 +236,8 @@ bool playerChoice(int &count){
     
     //checks for repeats
     if(a==b||b==c||a==c){
-        
+        std::cout << "Duplicate values\n" << std::endl;
+        return false;
     }
     
     //sets limits on cards
